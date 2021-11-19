@@ -45,7 +45,7 @@ public class BookController {
 	@RequestMapping("/libro")
 	public String libro(ModelMap modelo) {
 		//listando los autores
-				List<Autor>autores=autorRepository.findAll();
+				List<Autor>autores=autorRepository.listarAutorAlta();
 				modelo.put("autores", autores);	
 				
 				//listando la lista de editoriales
@@ -67,7 +67,7 @@ public class BookController {
 	@PostMapping("/crear")
 	public String registrarBook(ModelMap modelo, @RequestParam String titulo,@RequestParam Integer anio,@RequestParam Integer ejemplares,@RequestParam Integer ejemplaresPrestados,@RequestParam Integer ejemplaresRestantes,@RequestParam String idautor,@RequestParam String ideditorial) {
 		//listando los autores
-		List<Autor>autores=autorRepository.findAll();
+		List<Autor>autores=autorRepository.listarAutorAlta();
 		modelo.put("autores", autores);	
 		
 		//listando la lista de editoriales
@@ -125,12 +125,21 @@ public class BookController {
     public String eliminar(@PathVariable String id){
         try{
             bookService.deleteById(id);
-            System.out.println("SUPUESTAMENTE LO ELIMINO");
-            return "/catalogo";
         }catch(Exception e){
-        	System.out.println("NO LO ELIMINO");
-            return "redirect:/libro/catalogo";
+        	System.out.println("NO LO ELIMINO");           
         }
+        return "redirect:/libro/catalogo";
+    }
+	
+	@GetMapping("/alta/{id}")
+    public String darAlta(@PathVariable String id){
+        try{
+            bookService.darAlta(id);            
+        }catch(Exception e){
+        	System.out.println("NO LO dio de alta");
+            
+        }
+        return "redirect:/libro/catalogo";
     }
 
 }

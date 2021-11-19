@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
-
+import com.walterio123.libreria.entity.Autor;
 import com.walterio123.libreria.entity.Editorial;
 import com.walterio123.libreria.repository_DAO.EditorialRepository;
 
@@ -53,6 +53,34 @@ public class EditorialService {
 	public List<Editorial>listaEditoriales(){
 		
 		return editorialRepository.findAll();
+	}
+	@Transactional
+	public void darbaja(String id) throws Exception{
+		//buscando el usuario que queremos dar de baja
+		Optional<Editorial>respuestaOptional= editorialRepository.findById(id);	
+		//si esta creamos un autor y le seteamos los datos
+		if(respuestaOptional.isPresent()) {
+			Editorial editorial=respuestaOptional.get();
+			editorial.setAlta(false);
+			editorialRepository.save(editorial);
+		}else {
+			throw new Exception();
+			
+		}
+	}
+	@Transactional
+	public void daralta(String id) throws Exception{
+		//buscando el usuario que queremos dar de baja
+		Optional<Editorial>respuestaOptional= editorialRepository.findById(id);	
+		//si esta creamos un autor y le seteamos los datos
+		if(respuestaOptional.isPresent()) {
+			Editorial editorial=respuestaOptional.get();
+			editorial.setAlta(true);
+			editorialRepository.save(editorial);
+		}else {
+			throw new Exception();
+			
+		}
 	}
 	
 

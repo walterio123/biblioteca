@@ -14,8 +14,8 @@ import com.walterio123.libreria.entity.Autor;
 @Repository
 public interface AutorRepository extends JpaRepository<Autor, String> {
 	
-	@Query("SELECT c FROM Autor c WHERE c.alta IS NOT NULL ORDER BY c.nombre DESC ")
-	public List<Autor>listarAutor();
+	@Query("SELECT c FROM Autor c WHERE c.alta IS NOT FALSE ORDER BY c.nombre DESC ")
+	public List<Autor>listarAutorAlta();
 	
 	@Query("SELECT c FROM Autor c WHERE c.id= :id")
 	public Autor buscarPorId(@Param("id") String id);

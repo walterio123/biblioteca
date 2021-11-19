@@ -51,6 +51,34 @@ public class AutorService {
 		}
 	}
 	@Transactional
+	public void darbaja(String id) throws Exception{
+		//buscando el usuario que queremos dar de baja
+		Optional<Autor>respuestaOptional= autorRepository.findById(id);	
+		//si esta creamos un autor y le seteamos los datos
+		if(respuestaOptional.isPresent()) {
+			Autor autor=respuestaOptional.get();
+			autor.setAlta(false);
+			autorRepository.save(autor);
+		}else {
+			throw new Exception();
+			
+		}
+	}
+	@Transactional
+	public void daralta(String id) throws Exception{
+		//buscando el usuario que queremos dar de baja
+		Optional<Autor>respuestaOptional= autorRepository.findById(id);	
+		//si esta creamos un autor y le seteamos los datos
+		if(respuestaOptional.isPresent()) {
+			Autor autor=respuestaOptional.get();
+			autor.setAlta(true);
+			autorRepository.save(autor);
+		}else {
+			throw new Exception();
+			
+		}
+	}
+	@Transactional
 	public List<Autor>listaAutors(){
 		
 		return autorRepository.findAll();

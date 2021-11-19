@@ -45,6 +45,7 @@ public class Book implements Serializable {
 	    private Autor autor;
 	    @OneToOne(cascade = CascadeType.REMOVE)
 	    private Editorial editorial;
+	    
 		public Book() {
 			
 		}

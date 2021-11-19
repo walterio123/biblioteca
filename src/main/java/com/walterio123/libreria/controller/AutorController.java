@@ -40,24 +40,22 @@ public class AutorController {
 	public String registrar(ModelMap modelo, @RequestParam String nombre) {
 		try {
 			autorService.registrar(nombre);
-			//prueba de datos
-			System.out.println("nombre: "+nombre);
+		
 			modelo.put("message", "Ingreso exitoso");
 			
 		} catch (Exception e) {
 			modelo.put("error", "No se registro al autor por falta de nombre...");
-			System.out.println("No se registro");
+			
 			e.printStackTrace();
 		}
 		
 		return"autor.html";
 	}
-	@PostMapping("/baja")
-	public String baja(ModelMap modelo, @RequestParam String nombre) {
+	
+	@GetMapping("/baja/{id}")
+	public String darBaja(ModelMap modelo, @PathVariable String id) {
 		try {
-			autorService.baja(nombre);
-			//prueba de datos
-			System.out.println("nombre: "+nombre);//eliminar
+			autorService.darbaja(id);					
 			modelo.put("message2", "Modificacion exitosa.");
 			
 		} catch (Exception e) {
@@ -66,19 +64,18 @@ public class AutorController {
 			e.printStackTrace();
 		}
 		
-		return"autor.html";
+		return "redirect:/autor/lista";
 	}
-	@GetMapping("/eliminar/{id}")
-    public String eliminar(@PathVariable String id,ModelMap modelo){
+	@GetMapping("/alta/{id}")
+    public String alta(@PathVariable String id,ModelMap modelo){
         try{
-            autorService.eliminarAutor(id);
-            modelo.put("message3", "Eliminacion exitosa.");
-            System.out.println("SUPUESTAMENTE LO ELIMINO");
-            return "autorLista";
+            autorService.daralta(id);
+            modelo.put("message3", "Alta exitosa.");
+           
         }catch(Exception e){
-        	modelo.put("error3", "No se Elimino por tener libro...");
-        	System.out.println("NO LO ELIMINO");
-            return "autorLista";
+        	modelo.put("error3", "No se pudo dar alta..");
+           
         }
+        return "redirect:/autor/lista";
 	}
 }

@@ -95,8 +95,21 @@ public class BookService {
 		if (respuetaOptional.isPresent()) {
 			Book book=respuetaOptional.get();
 			book.setAlta(false);
+			bookRepository.save(book);
 		}else {
 			System.err.println("No existe el libro que queres dar de baja");
+			throw new Exception();
+		}
+		
+	}
+	public void darAlta(String id) throws Exception {
+		Optional<Book>respuetaOptional=bookRepository.findById(id);
+		if (respuetaOptional.isPresent()) {
+			Book book=respuetaOptional.get();
+			book.setAlta(true);
+			bookRepository.save(book);
+		}else {
+			System.err.println("No existe el libro que queres dar de alta");
 			throw new Exception();
 		}
 		

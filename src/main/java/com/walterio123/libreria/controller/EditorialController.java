@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,13 +40,10 @@ public class EditorialController {
 	public String registrar(ModelMap modelo, @RequestParam String nombre) {
 		try {
 			editorialService.registrar(nombre);
-			//prueba de datos
-			System.out.println("nombre: "+nombre);
 			modelo.put("message", "Ingreso exitoso");
 			
 		} catch (Exception e) {
 			modelo.put("error", "No se registro al autor por falta de nombre...");
-			System.out.println("No se registro");
 			e.printStackTrace();
 		}
 		
@@ -54,8 +53,19 @@ public class EditorialController {
 	public String baja(ModelMap modelo, @RequestParam String nombre) {
 		try {
 			editorialService.baja(nombre);
-			//prueba de datos
-			System.out.println("nombre: "+nombre);//eliminar
+			modelo.put("message2", "Modificacion exitosa.");
+			
+		} catch (Exception e) {
+			modelo.put("error2", "No se Modifico por no existir...");
+			e.printStackTrace();
+		}
+		
+		return"editorial.html";
+	}
+	@GetMapping("/baja/{id}")
+	public String darBaja(ModelMap modelo, @PathVariable String id) {
+		try {
+			editorialService.darbaja(id);					
 			modelo.put("message2", "Modificacion exitosa.");
 			
 		} catch (Exception e) {
@@ -64,7 +74,19 @@ public class EditorialController {
 			e.printStackTrace();
 		}
 		
-		return"editorial.html";
+		return "redirect:/editorial/lista";
+	}
+	@GetMapping("/alta/{id}")
+    public String alta(@PathVariable String id,ModelMap modelo){
+        try{
+            editorialService.daralta(id);
+            modelo.put("message3", "Alta exitosa.");
+           
+        }catch(Exception e){
+        	modelo.put("error3", "No se pudo dar alta..");
+           
+        }
+        return "redirect:/editorial/lista";
 	}
 	
 }
