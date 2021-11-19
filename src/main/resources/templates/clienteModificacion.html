@@ -27,7 +27,7 @@
             <p th:if="${error} != null" th:text="${error}" style="color:rgb(255, 0, 0);"></p> 
              <p th:if="${exito} != null" th:text="${exito}" style="color:rgb(128, 255, 0);"></p> 
              
-            <form th:action="@{/cliente/modificar/__${id}__}" method="POST">
+            <form th:action="@{/cliente/modificar/__${id}__}" method="POST" enctype="multipart/form-data">
             <input hidden th:value= "${id}" name ="id">
                 <h4>D.N.I:</h4>
               <div class="input-group mb-3">  
@@ -73,6 +73,11 @@
                 </div>
                 <input th:value="${cliente.password}" type="text" class="form-control" placeholder="Ingrese su Contraseña,minimo 6 digitos o letras." id="password2" name="password2">
               </div>
+               <div >
+				  <label for="exampleFormControlFile1">Foto del Cliente</label>
+				  <input type="file" class="form-control-file" name="archivo">
+				</div>
+				<br>	
               <button type="submit" class="btn btn-primary">Modificar</button>
             </form>
           </div>

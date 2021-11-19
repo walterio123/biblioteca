@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.walterio123.libreria.entity.Autor;
 import com.walterio123.libreria.entity.Book;
@@ -65,7 +66,7 @@ public class BookController {
 		return "catalogo";
 	}
 	@PostMapping("/crear")
-	public String registrarBook(ModelMap modelo, @RequestParam String titulo,@RequestParam Integer anio,@RequestParam Integer ejemplares,@RequestParam Integer ejemplaresPrestados,@RequestParam Integer ejemplaresRestantes,@RequestParam String idautor,@RequestParam String ideditorial) {
+	public String registrarBook(ModelMap modelo,MultipartFile archivo ,@RequestParam String titulo,@RequestParam Integer anio,@RequestParam Integer ejemplares,@RequestParam Integer ejemplaresPrestados,@RequestParam Integer ejemplaresRestantes,@RequestParam String idautor,@RequestParam String ideditorial) {
 		//listando los autores
 		List<Autor>autores=autorRepository.listarAutorAlta();
 		modelo.put("autores", autores);	
@@ -76,7 +77,7 @@ public class BookController {
 		
 		try {
 			modelo.put("exito", "Se registro el libro exitosamente.");
-			bookService.registrar(titulo, anio, ejemplares, ejemplaresPrestados, ejemplaresRestantes, idautor, ideditorial);
+			bookService.registrar(archivo, titulo, anio, ejemplares, ejemplaresPrestados, ejemplaresRestantes, idautor, ideditorial);
 		} catch (Exception e) {
 			System.out.println("Error al crear libro");
 			e.printStackTrace();
@@ -107,9 +108,9 @@ public class BookController {
 	}
 	
 	@PostMapping("/modificar/{id}")
-	public String modificarBook(@PathVariable String id, ModelMap modelo ,@RequestParam String titulo,@RequestParam Integer anio,@RequestParam Integer ejemplares,@RequestParam Integer ejemplaresPrestados,@RequestParam Integer ejemplaresRestantes,@RequestParam String idautor,@RequestParam String ideditorial) {	
+	public String modificarBook(MultipartFile archivo,@PathVariable String id,  ModelMap modelo ,@RequestParam String titulo,@RequestParam Integer anio,@RequestParam Integer ejemplares,@RequestParam Integer ejemplaresPrestados,@RequestParam Integer ejemplaresRestantes,@RequestParam String idautor,@RequestParam String ideditorial) {	
 			try {
-				bookService.modificar(id, titulo, anio, ejemplares, ejemplaresPrestados, ejemplaresRestantes, idautor, ideditorial);
+				bookService.modificar(archivo,id, titulo, anio, ejemplares, ejemplaresPrestados, ejemplaresRestantes, idautor, ideditorial);
 				modelo.put("exito", "modificado con exito");
 				System.out.println("Modificado el libro");
 				return "redirect:/libro/catalogo";

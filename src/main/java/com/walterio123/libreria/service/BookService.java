@@ -8,11 +8,13 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.walterio123.libreria.entity.Autor;
 import com.walterio123.libreria.entity.Book;
 import com.walterio123.libreria.entity.Cliente;
 import com.walterio123.libreria.entity.Editorial;
+import com.walterio123.libreria.entity.Foto;
 import com.walterio123.libreria.repository_DAO.AutorRepository;
 import com.walterio123.libreria.repository_DAO.BookRepository;
 import com.walterio123.libreria.repository_DAO.EditorialRepository;
@@ -21,6 +23,8 @@ import com.walterio123.libreria.repository_DAO.EditorialRepository;
 
 @Service
 public class BookService {
+	@Autowired
+	private FotoService fotoService;
 	
 	@Autowired
 	private BookRepository bookRepository;
@@ -32,7 +36,7 @@ public class BookService {
 	private EditorialRepository editorialRepository;
 	
 	@Transactional
-	public void registrar(String titulo,Integer anio,Integer ejemplares,Integer ejemplaresPrestados,Integer ejemplaresRestantes,String idautor,String ideditorial) throws Exception {
+	public void registrar(MultipartFile archivo, String titulo,Integer anio,Integer ejemplares,Integer ejemplaresPrestados,Integer ejemplaresRestantes,String idautor,String ideditorial) throws Exception {
 		
 		//buscar el autor ingresado
 		Autor autor=autorRepository.buscarPorId(idautor);
@@ -50,6 +54,11 @@ public class BookService {
 		book.setEjemplaresRestantes(ejemplaresRestantes);
 		book.setAutor(autor);
 		book.setEditorial(editorial);
+		//creando foto para guardar
+		Foto foto = fotoService.guardarFoto(archivo);
+		book.setFoto(foto);
+	
+
 		
 		//guardando el ente creado y seteado
 		bookRepository.save(book);
@@ -58,7 +67,7 @@ public class BookService {
 	
 
 	@Transactional
-	public void modificar(String id, String titulo,Integer anio,Integer ejemplares,Integer ejemplaresPrestados,Integer ejemplaresRestantes,String idautor,String ideditorial) throws Exception {
+	public void modificar(MultipartFile archivo, String id, String titulo,Integer anio,Integer ejemplares,Integer ejemplaresPrestados,Integer ejemplaresRestantes,String idautor,String ideditorial) throws Exception {
 		
 		//buscando si el libro que intenta modificar existe
 		
@@ -81,6 +90,18 @@ public class BookService {
 			book.setAutor(autor);
 			book.setEditorial(editorial);
 			
+			//Si el archivo contiene foto  
+			if (!archivo.isEmpty()) {
+				String idFoto = null;
+				//Se le agrega al idFoto la foto que ya tenia 
+				if (book.getFoto() != null) {
+					idFoto = book.getFoto().getId();
+				}
+				//Caso contrario la actualiza
+				Foto foto = fotoService.actualizarFoto(idFoto, archivo);
+				book.setFoto(foto);
+
+			
 			//guardando los cambios si todo esta correcto
 			bookRepository.save(book);
 			
@@ -89,6 +110,7 @@ public class BookService {
 			System.out.println("Error al modificar el libro");
 			throw new Exception();
 					}
+	}
 	}
 	public void eliminar(String id) throws Exception {
 		Optional<Book>respuetaOptional=bookRepository.findById(id);

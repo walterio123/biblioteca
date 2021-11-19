@@ -27,7 +27,7 @@
             <p>Complete el siguiente formulario para Modificar el libro</p>
             
             
-            <form th:action="@{/libro/modificar/__${id}__}" method="POST" >
+            <form th:action="@{/libro/modificar/__${id}__}" method="POST" enctype="multipart/form-data" >
               <input hidden th:value= "${id}" name ="id">
           
               <h4>Titulo:</h4>
@@ -72,11 +72,21 @@
                   <select class="form-control" name="idautor"  >
                       <option  th:each="autor : ${autores}" th:value="${autor.id}"  th:text="${autor.nombre}" ></option>
                   </select>
+                  <label>Autor Original</label>
+                  <h6 th:text="${libro.autor.nombre}"></h6>
                   
                   <label>Editorial</label>
                   <select class="form-control" name="ideditorial"  >
                       <option th:each="editorial : ${editoriales}" th:value="${editorial.id}" th:text="${editorial.nombre}" ></option>
                   </select> 
+                  <label>Editorial Original</label>
+                  <h6 th:text="${libro.editorial.nombre}"></h6>
+                  
+                   <div class="form-group col-8">
+						<label for="exampleFormControlFile1">Foto del libro</label>
+						<input type="file" class="form-control-file" name="archivo">
+					</div>
+
                
 			<br>
               <button type="submit" class="btn btn-primary   ">Modificar Libro</button>

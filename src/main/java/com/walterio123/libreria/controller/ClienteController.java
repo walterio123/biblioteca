@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.walterio123.libreria.entity.Cliente;
 import com.walterio123.libreria.repository_DAO.ClienteRepository;
@@ -31,11 +32,11 @@ public class ClienteController {
 	}
 	
 	@PostMapping("/cliente")
-	public String registrar(ModelMap modelo, @RequestParam Long documento,@RequestParam String nombre,@RequestParam String apellido,@RequestParam String telefono,@RequestParam String password,@RequestParam String password2) {
+	public String registrar(MultipartFile archivo, ModelMap modelo, @RequestParam Long documento,@RequestParam String nombre,@RequestParam String apellido,@RequestParam String telefono,@RequestParam String password,@RequestParam String password2) {
 		
 	
 		try {
-			clienteService.registrar(documento, nombre, apellido, telefono, password,password2);
+			clienteService.registrar(archivo, documento, nombre, apellido, telefono, password,password2);
 			modelo.put("exito", "El cliente Fue dado de alta con exito");
 		} catch (Exception e) {
 			modelo.put("error", e.getMessage());
@@ -66,10 +67,10 @@ public class ClienteController {
 	}
 	
 	@PostMapping("/modificar/{id}")
-	public String modificar(ModelMap modelo, @PathVariable String id,@RequestParam Long documento,@RequestParam String nombre,@RequestParam String apellido,@RequestParam String telefono,@RequestParam String password) {
+	public String modificar(MultipartFile archivo, ModelMap modelo, @PathVariable String id,@RequestParam Long documento,@RequestParam String nombre,@RequestParam String apellido,@RequestParam String telefono,@RequestParam String password) {
 		try {
 			modelo.put("exito", "DIO DE BAJA EL CLIENTE");
-			clienteService.modificar(id, documento, nombre, apellido, telefono, password);
+			clienteService.modificar(archivo, id, documento, nombre, apellido, telefono, password);
 			System.out.println("Modifico EL CLIENTE");
 			return "redirect:/cliente/lista";
 		} catch (Exception e) {

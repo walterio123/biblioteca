@@ -31,7 +31,7 @@
             <p>Complete el siguiente formulario para crear el libro</p>
             
             
-            <form th:action="@{/libro/crear}" method="POST" >
+            <form th:action="@{/libro/crear}" method="POST" enctype="multipart/form-data">
              
           
               <h4>Titulo:</h4>
@@ -81,6 +81,12 @@
                   <select class="form-control" name="ideditorial"  >
                       <option th:each="editorial : ${editoriales}" th:value="${editorial.id}" th:text="${editorial.nombre}" ></option>
                   </select> 
+                  
+                  <div class="form-group col-8">
+						<label for="exampleFormControlFile1">Foto del libro</label>
+						<input type="file" class="form-control-file" name="archivo">
+					</div>
+
                
 			<br>
               <button type="submit" class="btn btn-primary   ">Registrar Libro</button>

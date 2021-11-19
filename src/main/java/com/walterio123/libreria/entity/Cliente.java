@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -26,6 +27,9 @@ public class Cliente implements Serializable {
 	    private String password;
 	    private boolean estado;
 	    
+	    @OneToOne
+	    private Foto foto;
+	    
 	    public Cliente() {
 	    }
 
@@ -41,7 +45,15 @@ public class Cliente implements Serializable {
 	    
 	    
 
-	    public boolean isEstado() {
+	    public Foto getFoto() {
+			return foto;
+		}
+
+		public void setFoto(Foto foto) {
+			this.foto = foto;
+		}
+
+		public boolean isEstado() {
 			return estado;
 		}
 

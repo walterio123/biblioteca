@@ -6,21 +6,23 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.multipart.MultipartFile;
 
 import com.walterio123.libreria.entity.Cliente;
-
+import com.walterio123.libreria.entity.Foto;
 import com.walterio123.libreria.repository_DAO.ClienteRepository;
 
 
 @Service
 public class ClienteService {
+	@Autowired
+	private FotoService fotoService;
 	
 	@Autowired
 	private ClienteRepository clienteRepository;
 
 	@Transactional
-	public void registrar(Long documento,String nombre,String apellido,String telefono,String password,String password2) throws Exception {
+	public void registrar(MultipartFile archivo, Long documento,String nombre,String apellido,String telefono,String password,String password2) throws Exception {
 		//validando que los datos ingresados sean utiles 
 		validarDatos(documento, nombre, apellido, telefono, password,password2);
 		
@@ -33,12 +35,24 @@ public class ClienteService {
 		//seteado siempre en true cuando se da de alta
 		cliente.setEstado(true);
 		
+		//Si el archivo contiene foto  
+		if (!archivo.isEmpty()) {
+			String idFoto = null;
+			//Se le agrega al idFoto la foto que ya tenia 
+			if (cliente.getFoto() != null) {
+				idFoto = cliente.getFoto().getId();
+			}
+			//Caso contrario la actualiza
+			Foto foto = fotoService.actualizarFoto(idFoto, archivo);
+			cliente.setFoto(foto);
+
+		
 		clienteRepository.save(cliente);
 		
 	}
-	
+	}
 	@Transactional
-	public void modificar(String id, Long documento,String nombre,String apellido,String telefono,String password) throws Exception {
+	public void modificar(MultipartFile archivo, String id, Long documento,String nombre,String apellido,String telefono,String password) throws Exception {
 		//buscando si el id que ingreso corresponde a un cliente que exista
 		
 		Optional<Cliente>respuestaOptional=clienteRepository.findById(id);
@@ -50,12 +64,23 @@ public class ClienteService {
 			cliente.setTelefono(telefono);
 			cliente.setPassword(password);
 			cliente.setEstado(true);
+			//Si el archivo contiene foto  
+			if (!archivo.isEmpty()) {
+				String idFoto = null;
+				//Se le agrega al idFoto la foto que ya tenia 
+				if (cliente.getFoto() != null) {
+					idFoto = cliente.getFoto().getId();
+				}
+				//Caso contrario la actualiza
+				Foto foto = fotoService.actualizarFoto(idFoto, archivo);
+				cliente.setFoto(foto);
 			clienteRepository.save(cliente);
 		}else {
 			System.out.println("Error al modificar el cliente");
 			throw new Exception();	
 		}
 	}
+	}		
 	public void eliminar(String id) throws Exception {
 		Optional<Cliente>respuetaOptional=clienteRepository.findById(id);
 		if (respuetaOptional.isPresent()) {
