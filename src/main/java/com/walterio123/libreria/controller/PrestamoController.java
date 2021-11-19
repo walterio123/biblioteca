@@ -81,11 +81,11 @@ public class PrestamoController {
 	}
 	@GetMapping("/modificar/{id}")
 	public String modificar(ModelMap modelo,@PathVariable String id) {
-		List<Cliente>clientes=clienteRepository.findAll();
-		modelo.put("clientes", clientes);
+		//List<Cliente>clientes=clienteRepository.findAll();
+		//modelo.put("clientes", clientes);
 		
-		List<Book>catalogo=bookRepository.findAll();
-		modelo.put("catalogo", catalogo);
+		//List<Book>catalogo=bookRepository.findAll();
+		//modelo.put("catalogo", catalogo);
 		
 		try {
 			modelo.put("prestamo", prestamoRepository.buscarPorId(id));
@@ -98,9 +98,9 @@ public class PrestamoController {
 		
 	}
 	@PostMapping("/modificar/{id}")
-	public String modificar(@PathVariable String id, ModelMap modelo ,@RequestParam String  idcliente, @RequestParam String idlibro,@RequestParam (required = false) @DateTimeFormat(pattern = "yyyy-MM-dd" )Date fechaPrestamo,@RequestParam (required = false) @DateTimeFormat(pattern = "yyyy-MM-dd" )Date fechaDevolucion) {	
+	public String modificar(@PathVariable String id, ModelMap modelo ,@RequestParam (required = false) @DateTimeFormat(pattern = "yyyy-MM-dd" )Date fechaPrestamo,@RequestParam (required = false) @DateTimeFormat(pattern = "yyyy-MM-dd" )Date fechaDevolucion) {	
 			try {
-				prestamoService.modificar(id, idcliente, idlibro, fechaPrestamo,fechaDevolucion);
+				prestamoService.modificar(id, fechaPrestamo, fechaDevolucion);
 				modelo.put("exito", "modificado con exito");
 				System.out.println("Modificado el libro");
 				return "redirect:/prestamo/lista";

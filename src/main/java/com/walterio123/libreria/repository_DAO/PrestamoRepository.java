@@ -19,4 +19,5 @@ public interface PrestamoRepository extends JpaRepository<Prestamo, String> {
 	@Query("SELECT c FROM Prestamo c WHERE c.alta IS NOT FALSE")
 	public List<Prestamo> buscarSoloAlta();
 	
+	
 }

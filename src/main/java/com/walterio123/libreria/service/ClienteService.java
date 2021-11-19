@@ -91,6 +91,17 @@ public class ClienteService {
 		}
 		
 	}
+public Cliente buscarClientePorApellido(String apellido) throws Exception {
+		
+		Cliente cliente=clienteRepository.buscarCliente(apellido);
+		if(cliente != null) {
+			return cliente;
+		}else {
+			
+			throw new Exception("El cliente que Busca por ese id no existe.");
+		}
+		
+	}
 	
 	public void validarDatos(Long documento,String nombre,String apellido,String telefono,String password,String password2)  throws Exception{
 

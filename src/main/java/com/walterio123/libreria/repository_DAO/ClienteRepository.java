@@ -31,7 +31,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, String>{
 	@Query("SELECT a FROM Cliente a WHERE a.nombre like :nombre%")
 	public List<Cliente> buscarPorNombre(@Param("nombre") String nombre); 
 	
-	@Query("SELECT a FROM Cliente a WHERE a.nombre like :nombre%")
-	public Optional<Cliente> buscarCliente(@Param("nombre")String nombre);
+	@Query("SELECT a FROM Cliente a WHERE a.apellido like :apellido%")
+	public Cliente buscarCliente(@Param("apellido")String apellido);
 
 }

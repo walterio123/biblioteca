@@ -24,35 +24,37 @@ public class MainController {
 	
 	@RequestMapping("/")
 	public String index() {
-		return "index";
+		return "inicio-1";
 	}
+	//@GetMapping("/inicio")
+	//public String inicio() {
+		//return "inicio-1";
+	//}
 	
 	//To do implementar seguridad
 	
-	/*@GetMapping("/login") 
-    public String login( ModelMap modelo,@RequestParam String id,String password){
+	@GetMapping("/login") 
+    public String login( ModelMap modelo,@RequestParam String apellido,String password){
        //buscando el la base de datos si el id corresponde a un cliente
-		Optional<Cliente>respuestaOptional= clienteService.buscarClientePorId(id);
-		if (respuestaOptional.isPresent()) {
-			Cliente cliente=respuestaOptional.get();
-			if (cliente.getPassword().equals(password)) {
-				return "catalogo";
-			}else {
-				throw new Exception();
-				modelo.put("error", "El password ingresado no corresponde al usuario");
-				return "index";
-			}
-			
+	try {
+		Cliente cliente=clienteService.buscarClientePorApellido(apellido);
+		if(cliente.getPassword().equals(password)) {
+			System.out.println("Password correcto ENTRO");
+			modelo.put("exito", "Bienvenido");
+			return "redirect:/libro/catalogo";
 		}else {
+			modelo.put("error", "El password no corresponde al Usuario.");
+			System.out.println("Password incorrecto");
 			throw new Exception();
-			modelo.put("error", "El nombre es incorrecto o no existe");
-			return "index";
 		}
-	;
+	} catch (Exception e) {
+		System.out.println("No existe el cliente");
+		e.printStackTrace();
+		return "inicio-1";
+	}
+	
 		
-		
-       
-        return "index";
-    }  */
+	
+    }  
 
 }
